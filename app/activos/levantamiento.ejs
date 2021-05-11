@@ -1,0 +1,203 @@
+<% include ../partials/header_start %>
+<% include ../partials/header_end %>
+
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="wrapper m-t-2">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card-box">
+
+          <h4 class="header-title m-t-0 m-b-30">Levantamiento</h4>
+          <div class="row">
+            <div class="col-lg-6 col-sm-12 col-xs-12 col-md-6 col-xl-6">
+              <form id="formActivo" method="POST">
+                <input type="hidden" id="id" name="id" value="">
+
+                <fieldset class="form-group">
+                  <label for="descripcion">Descripcion</label>
+                  <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Descripcion ...">
+                </fieldset>
+
+                <fieldset class="form-group">
+                  <label for="Marca">Marca</label>
+                  <input type="text" class="form-control" id="Marca" name="Marca" placeholder="Marca ...">
+                </fieldset>
+
+                <fieldset class="form-group">
+                  <label for="Modelo">Modelo</label>
+                  <input type="text" class="form-control" id="Modelo" name="Modelo" placeholder="Modelo ..." >
+                </fieldset>
+
+                <fieldset class="form-group">
+                  <label for="Serie">Serie</label>
+                  <input type="text" class="form-control" id="Serie" name="Serie" placeholder="Serie ...">
+                </fieldset>
+
+                <fieldset class="form-group">
+                  <label for="PaisOrigen">Pais de Origen</label>
+                  <select class="form-control" id="PaisOrigen" name="PaisOrigen">
+                    <% for(var i=0; i < paises.length; i++) { %>
+                      <option value="<%= paises[i].id %>"><%= paises[i].pais %></option>
+                      <% } %>
+                    </select>
+                  </fieldset>
+
+                  <fieldset class="form-group">
+                    <label for="Observacion">Observacion</label>
+                    <textarea class="form-control" id="Observacion" name="Observacion" rows="3"></textarea>
+                  </fieldset>
+
+                  <fieldset class="form-group">
+                    <label for="Grupo">Grupo</label>
+                    <select class="form-control" id="Grupo" name="Grupo">
+                      <% for(var i=0; i < grupos.length; i++) { %>
+                        <option value="<%= grupos[i].id %>"><%= grupos[i].concepto %></option>
+                        <% } %>
+                      </select>
+                    </fieldset>
+
+                    <fieldset class="form-group">
+                      <label for="PaisOrigen">Planta</label>
+                      <select class="form-control" id="Planta" name="Planta">
+                        <% for(var i=0; i < plantas.length; i++) { %>
+                          <option value="<%= plantas[i].id %>"><%= plantas[i].ubicacion %></option>
+                          <% } %>
+                        </select>
+                      </fieldset>
+
+                      <fieldset class="form-group">
+                        <label for="PaisOrigen">Ubicacion</label>
+                        <select class="form-control" id="Ubicacion" name="Ubicacion">
+                          <% for(var i=0; i < ubicaciones.length; i++) { %>
+                            <option value="<%= ubicaciones[i].id %>"><%= ubicaciones[i].ubicacion %></option>
+                            <% } %>
+                          </select>
+                        </fieldset>
+
+                        <button id="guardarLevantamiento" class="btn btn-primary">Guardar</button>
+                      </form>
+                    </div>
+
+                    <div class="col-lg-6 col-sm-12 col-xs-12 col-md-6 col-xl-6 m-t-sm-40">
+                      <input type="button" class="btn btn-primary" id="AbrirFotos" value="Capturar fotografias"/>
+                      <div id="divFotos">
+
+                      </div>
+                    </div><!-- end col -->
+                  </div><!-- end row -->
+                </div>
+              </div><!-- end col -->
+            </div>
+            <!-- end row -->
+
+            <!-- Modal fotos -->
+            <div class="modal fade" id="modalFotos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Captura de imagenes</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div id="camdemo" style="width: 800px; height: 600px; text-align: center; margin: 0 auto;"></div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" id="start" class="btn btn-primary">Encender/Apagar Camara</button>
+                    <button class="btn btn-primary" id="savefile">Tomar fotografia</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End fotos modal -->
+
+            <!-- ============================================================== -->
+            <!-- End Right content here -->
+            <!-- ============================================================== -->
+
+            <% include ../partials/footer_start %>
+
+            <script type="text/javascript">
+            $(function() {
+              // Variables
+              var contadorFotos = 1;
+              var enabled = false;
+              var WebCamera = require("webcamjs");
+              var fs = require('fs');
+              var id = Date.now();
+              var imagenes = [];
+
+              // Configuracion
+              router.send('ready');
+              $('#id').val(id);
+
+              // Funciones de webcam
+              $('#AbrirFotos').click(function() {
+                $('#modalFotos').modal();
+              });
+
+              $('#start').click(function() {
+                if(!enabled) {
+                  enabled = true;
+                  WebCamera.attach('#camdemo');
+                }
+                else {
+                  enabled = false;
+                  WebCamera.reset();
+                }
+              });
+
+              function processBase64Image(dataString) {
+                var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),response = {};
+                if (matches.length !== 3) {
+                  return new Error('Invalid input string');
+                }
+                response.type = matches[1];
+                response.data = new Buffer(matches[2], 'base64');
+                return response;
+              }
+
+              $('#savefile').click(function() {
+                var nombreArchivo = './app/fotos/' + id + '_' + contadorFotos + '.png';
+                var ubicacion = '../fotos/' + id + '_' + contadorFotos + '.png';
+                var nombre = id + '_' + contadorFotos + '.png';
+                if(enabled) {
+                  WebCamera.snap(function(data_uri) {
+                    var imageBuffer = processBase64Image(data_uri);
+                    fs.writeFile(nombreArchivo, imageBuffer.data,function(err) {
+                      if(err){
+                        console.log(err);
+                      }
+                      else {
+                        contadorFotos++;
+                        imagenes.push(nombre);
+                        agregarImagen(ubicacion);
+                        enabled = false;
+                        WebCamera.reset();
+                        $('#modalFotos').modal('hide');
+                      }
+                    });
+                  });
+                }
+              });
+
+              function agregarImagen(url) {
+                var imagen = "<img class='img-responsive img-thumbnail' style='height: 150px; width: 150px;' src='" + url + "'/>"
+                $('#divFotos').append(imagen);
+              }
+
+              $('#guardarLevantamiento').on('click', () => {
+                var serialize = require('form-serialize');
+                var form =  document.querySelector('#formActivo');
+                var obj = serialize(form, { hash: true });
+                router.route('POST','/levantamiento',obj,imagenes,id, ( err, result ) => {})
+              });
+
+            });
+            </script>
+
+            <% include ../partials/footer_end %>

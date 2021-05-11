@@ -1,0 +1,29 @@
+{
+  "activos": [
+    {
+      "Grupo": "1",
+      "Marca": "Prueba",
+      "Modelo": "Prueba",
+      "Observacion": "Prueba",
+      "PaisOrigen": "152",
+      "Serie": "Prueba",
+      "descripcion": "Prueba",
+      "id": "1510256147195",
+      "sync": "true",
+      "idEmpresa": 3
+    }
+  ],
+  "imagenes": [
+    {
+      "id": 1510256147195,
+      "imagen": "1510256147195_1.png"
+    },
+    {
+      "id": 1510256147195,
+      "imagen": "1510256147195_2.png"
+    }
+  ],
+  "fsync": {
+    "fecha": "11/09/2017"
+  }
+}

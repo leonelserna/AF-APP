@@ -1,0 +1,29 @@
+<script type="text/javascript">
+$(() => {
+  router.send('ready')
+
+  $('#levantamiento').on('click', () => {
+    router.route('GET','/levantamiento', ( err, result ) => {})
+  });
+
+  $('#sincronizar').on('click', () => {
+    router.route('GET', '/sincronizar', (err,result) => {})
+  });
+
+  $('#dashboard').on('click', () => {
+    router.route('GET', '/', (err,result) => {})
+  });
+
+  $('#listado').on('click', () => {
+    router.route('GET', '/listado', (err,result) => {})
+  });
+
+  $('#botonCerrar').on('click', () => {
+    router.route('GET', '/logout', (err,result) => {})
+  });
+
+});
+</script>
+
+</body>
+</html>

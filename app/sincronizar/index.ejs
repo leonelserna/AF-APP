@@ -1,0 +1,80 @@
+<% include ../partials/header_start %>
+<% include ../partials/header_end %>
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+
+<div class="wrapper m-t-2">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card-box">
+
+          <h4 class="header-title m-t-0 m-b-30">Sincronizar</h4>
+
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th class="text-xs-center">#</th>
+                  <th class="text-xs-center">Concepto</th>
+                  <th class="text-xs-center">Ultima sincronizacion</th>
+                  <th class="text-xs-center">Accion</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th class="text-xs-center" scope="row">1</th>
+                  <td>Catalogos</td>
+                  <td class="text-xs-center"><%= FCatalogos.fecha %></td>
+                  <td class="text-xs-center"><a id="syncCatalogos" href="#" class="btn btn-primary">Sincronizar</a></td>
+                </tr>
+                <tr>
+                  <th class="text-xs-center" scope="row">2</th>
+                  <td>Ubicaciones y Areas</td>
+                  <td class="text-xs-center" ><%= FUbicaciones.fecha %></td>
+                  <td class="text-xs-center"><a id="syncUbicaciones" href="#" class="btn btn-primary">Sincronizar</a></td>
+                </tr>
+                <tr>
+                  <th class="text-xs-center" scope="row">3</th>
+                  <td>Informacion documental</td>
+                  <td class="text-xs-center"><%= FActivos.fecha %></td>
+                  <td class="text-xs-center"><a id="syncInformacion" href="" class="btn btn-primary">Sincronizar</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- End Right content here -->
+<!-- ============================================================== -->
+
+<% include ../partials/footer_start %>
+
+<script type="text/javascript">
+$(() => {
+  router.send('ready')
+
+  $('#syncCatalogos').on('click', () => {
+    router.route('GET','/synccatalogos', ( err, result ) => {})
+  });
+
+  $('#syncUbicaciones').on('click', () => {
+    router.route('GET', '/syncubiare', (err,result) => {})
+  });
+
+  $('#syncInformacion').on('click', () => {
+    router.route('GET', '/syncactivos', (err,result) => {})
+  });
+
+});
+</script>
+
+<% include ../partials/footer_end %>

@@ -1,0 +1,32 @@
+{
+  "name": "sdaaf",
+  "version": "1.0.0",
+  "description": "Aplicacion de activo fijo de EUSAGA Logistica",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "",
+  "author": "Javier Toscano",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "~1.7.8"
+  },
+  "dependencies" : {
+    "ejs-electron" : "latest",
+    "electron-router" : "latest",
+    "jquery" : "latest",
+    "lowdb" : "latest",
+    "mysql" : "latest",
+    "underscore" : "latest",
+    "moment" : "latest",
+    "electron-settings" : "latest",
+    "sha256" : "latest",
+    "webcamjs" : "latest",
+    "remote" : "latest",
+    "lowdb-recursive" : "latest",
+    "ftp" : "latest",
+    "is-online" : "latest",
+    "form-serialize" : "latest"
+  }
+}

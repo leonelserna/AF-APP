@@ -1,0 +1,66 @@
+<% include ../partials/header_start %>
+<% include ../partials/header_end %>
+
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="wrapper m-t-2">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card-box">
+
+          <h4 class="header-title m-t-0 m-b-30">Listado de Activos</h4>
+
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th class="text-xs-center">id</th>
+                  <th class="text-xs-center">Descripcion</th>
+                  <th class="text-xs-center">Marca</th>
+                  <th class="text-xs-center">Modelo</th>
+                  <th class="text-xs-center">Serie</th>
+                  <th class="text-xs-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% datos.forEach(function(activo) { %>
+                  <tr>
+                    <td><%= activo.id %></td>
+                    <td><%= activo.descripcion %></td>
+                    <td><%= activo.Marca %></td>
+                    <td><%= activo.Modelo %></td>
+                    <td><%= activo.Serie %></td>
+                    <td class="text-xs-center"><button type="button" class="btn btn-warning">Editar</button></td>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ============================================================== -->
+  <!-- End Right content here -->
+  <!-- ============================================================== -->
+
+  <% include ../partials/footer_start %>
+
+  <script type="text/javascript">
+    $(function () {
+
+      router.send('ready');
+
+      function Editar(id){
+        router.route('GET','/editar', id, ( err, result ) => {});
+      }
+
+    });
+  </script>
+
+  <% include ../partials/footer_end %>
